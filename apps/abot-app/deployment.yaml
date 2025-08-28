@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: abot-app
+  template:
+    metadata:
+      labels:
+        app: abot-app
+    spec:
+      containers: 
+      - name: abot-app
+        image: nginx:latest
+        ports:
+        - containerPort: 80

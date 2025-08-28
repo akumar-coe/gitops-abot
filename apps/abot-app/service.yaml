@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: abot-app
+spec:
+  selector:
+    app: abot-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
