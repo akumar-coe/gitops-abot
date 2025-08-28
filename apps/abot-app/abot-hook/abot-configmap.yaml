@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: abot-trigger-script
 data:
-  abot-trigger.py: |import requests
+  abot-trigger.py: |
+    import requests
     import json
     # Configuration
     ABOT_IP = "182.74.103.228"
