@@ -2,3 +2,6 @@ resources:
   - namespace.yaml
   - deployment.yaml
   - service.yaml
+  - abot-hook/abot-configmap.yaml
+  - abot-hook/abot-secret.yaml
+  - abot-hook/abot-job.yaml

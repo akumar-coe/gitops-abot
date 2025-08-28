@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: abot-trigger-script
+data:
+  abot-trigger.py: |import requests
+    import json
+    # Configuration
+    ABOT_IP = "182.74.103.228"
+    ABOT_PORT = 80   # change to 8443 if HTTPS
+    EMAIL = "admin"
+    PASSWORD = "admin1234"
+    TAG = "your_tag_here"
+    BASE_URL = f"http://{ABOT_IP}:{ABOT_PORT}/abotrest/abot/api/v5"
+    # Step 1: Login to Abot
+    login_url = f"{BASE_URL}/login"
+    login_payload = {
+      "email": EMAIL,
+      "password": PASSWORD
+    }
+    print("Logging in to Abot...")
+    login_response = requests.post(login_url, json=login_payload, verify=False)
+    if login_response.status_code != 200:
+      print("❌ Login failed:", login_response.text)
+      exit(1)
+    response_json = json.loads(login_response.text)
+
+    # Access the token
+    token = response_json['data']['token']
+
+    if not token:
+      print("❌ No token returned in login response.")
+      exit(1)
+    print("✅ Logged in successfully. Token acquired.")
+    # Step 2: Call /abot/api/v5/feature_files_tags API
+    feature_url = f"{BASE_URL}/feature_files_tags"
+    headers = {"Authorization": f"Bearer {token}"}
+    #params = {"tag": TAG}
+    print(f"Fetching feature file list for tag: {TAG} ...")
+    feature_response = requests.get(feature_url, headers=headers, params=None, verify=False)
+    if feature_response.status_code == 200:
+      print("✅ Feature files retrieved:")
+    else:
+      print("❌ Failed to fetch feature file list:", feature_response.text)
+    # Step 3. Call /abot/api/v5/update_config_properties API
+    feature_url = f"{BASE_URL}/update_config_properties"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    properties_params = {
+        "filename": "/etc/rebaca-test-suite/config/admin/ABotConfig.properties"
+    }
+
+    properties_payload = {
+      "comment": [
+        "ABOT.TESTBED=file:oai-epc/testbed-all-nodes.properties",
+        "ABOT.SUTVARS=file:abot-emulated/sut-vars/default5g.properties"
+      ],
+      "uncomment": [
+        "ABOT.TESTBED=file:open5gs/testbed-5g-emulated-gnb.properties",
+        "ABOT.SUTVARS=file:open5gs/sut-vars/default.properties"
+      ],
+      "update": {
+        "config_key": "config_value"
+      }
+    } 
+
+    properties_response = requests.post(feature_url, headers=headers, params=properties_params, json=properties_payload, verify=False)
+    if properties_response.status_code != 200:
+      print("❌ Failed to set testbed:", properties_response.text)
+      exit(1)
+    print(properties_response.text)

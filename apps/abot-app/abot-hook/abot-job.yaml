@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: trigger-external-abot-tests
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: hookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: abot-trigger
+        image: python:3.11-slim
+        command: ["python", "/scripts/abot-trigger.py"]
+        envFrom:
+        - secretRef:
+            name: abot-secret
+        volumeMounts:
+        - name: script-volume
+          mountPath: /scripts
+      restartPolicy: Never
+      volumes:
+      - name: script-volume
+        configMap:
+          name: abot-trigger-script
+  backoffLimit: 0
