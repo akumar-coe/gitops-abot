@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+ name: abot-operator
+ namespace: argocd
+ annotations:
+# ArgoCD Image Updater: track operator image in GHCR
+argocd-image-updater.argoproj.io/image-list: operator=ghcr.io/akumar-coe/abot-operator
+argocd-image-updater.argoproj.io/operator.update-strategy: latest
+argocd-image-updater.argoproj.io/operator.allow-tags: regexp:^main-[a-f0-9]{40}$
+argocd-image-updater.argoproj.io/write-back-method: git
+argocd-image-updater.argoproj.io/git-branch: main
+argocd-image-updater.argoproj.io/git-username: git-updater
+argocd-image-updater.argoproj.io/git-token-secret: argocd-image-updater-git:password
+spec:
+ project: default
+ source:
+   repoURL: https://github.com/akumar-coe/gitops-abot.git
+   targetRevision: main
+   path: operator
+ destination:
+   server: https://kubernetes.default.svc
+   namespace: abot-system
+ syncPolicy:
+   automated:
+     selfHeal: true
+     prune: true
