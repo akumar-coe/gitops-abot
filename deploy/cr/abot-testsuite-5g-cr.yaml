@@ -2,7 +2,11 @@ apiVersion: abot.capg.io/v1
 kind: AbotTestSuite
 metadata:
  name: daily-regression
+ namespace: default
 spec:
+  endpoint: "https://182.74.103.228/abot"
+  auth:
+    secretRef: abot-credentials
  build: "default"
  tests:
    - testTag: "5gs-initial-registration-open5gs-s"
