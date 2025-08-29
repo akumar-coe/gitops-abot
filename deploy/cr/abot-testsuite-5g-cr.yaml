@@ -3,10 +3,10 @@ kind: AbotTestSuite
 metadata:
  name: daily-regression
 spec:
- build: "nightly-2025-08-29"
+ build: "default"
  tests:
-   - testTag: "initial-attach"
+   - testTag: "5gs-initial-registration-open5gs-s"
      configOverrides:
-       ABOT.TESTBED: "testbed-5g"
+       ABOT.TESTBED: "testbed-5g-emulated-gnb"
    - testTag: "handover"
    - testTag: "detach"

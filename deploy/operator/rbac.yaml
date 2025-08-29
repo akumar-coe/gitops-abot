@@ -10,6 +10,9 @@ metadata:
   name: abot-operator-role
 rules:
   # Watch our CRDs and update their status
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get","list","watch"]
   - apiGroups: ["abot.capg.io"]
     resources: ["abottestsuites", "abottestsuites/status", "abottests", "abottests/status"]
     verbs: ["get","list","watch","patch","update"]

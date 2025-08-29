@@ -3,6 +3,9 @@ kind: AbotTest
 metadata:
  name: 5gs-initial-registration-open5gs-s
 spec:
+ endpoint: "https://182.74.103.228/abot"
+ auth: 
+ secretRef: abot-credentials 
  testTag: "5gs-initial-registration-open5gs-s"
  build: "default"
  configOverrides:
