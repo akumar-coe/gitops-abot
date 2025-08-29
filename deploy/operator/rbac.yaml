@@ -1,9 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: abot-system
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: abot-operator-sa
