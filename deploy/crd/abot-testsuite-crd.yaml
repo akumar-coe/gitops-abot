@@ -1,0 +1,56 @@
+# abot-testsuite-crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+ name: abottestsuites.abot.capg.io
+spec:
+ group: abot.capg.io
+ names:
+   kind: AbotTestSuite
+   plural: abottestsuites
+   singular: abottestsuite
+   shortNames:
+     - atsuite
+ scope: Namespaced
+ versions:
+   - name: v1
+     served: true
+     storage: true
+     schema:
+       openAPIV3Schema:
+         type: object
+         properties:
+           spec:
+             type: object
+             properties:
+               build:
+                 type: string
+                 description: "Build or release under test"
+               tests:
+                 type: array
+                 items:
+                   type: object
+                   properties:
+                     testTag:
+                       type: string
+                     configOverrides:
+                       type: object
+                       additionalProperties:
+                         type: string
+           status:
+             type: object
+             properties:
+               suitePhase:
+                 type: string
+                 description: "Overall status (Pending, Running, Completed, Failed)"
+               testStatuses:
+                 type: array
+                 items:
+                   type: object
+                   properties:
+                     name:
+                       type: string
+                     phase:
+                       type: string
+                     resultsURL:
+                       type: string

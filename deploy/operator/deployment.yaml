@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abot-operator
+  namespace: abot-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: abot-operator
+  template:
+    metadata:
+      labels:
+        app: abot-operator
+    spec:
+      serviceAccountName: abot-operator-sa
+      containers:
+        - name: operator
+          image: ghcr.io/akumar-coe/abot-operator:latest
+          imagePullPolicy: IfNotPresent
+          # Run kopf in standalone mode (no peering object needed)
+          command: ["kopf", "run", "--standalone", "/app/operator.py"]
+          workingDir: /app
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources: {}

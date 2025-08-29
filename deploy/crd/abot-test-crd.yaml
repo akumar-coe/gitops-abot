@@ -1,0 +1,45 @@
+# abot-test-crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+ name: abottests.abot.capg.io
+spec:
+ group: abot.capg.io
+ names:
+   kind: AbotTest
+   plural: abottests
+   singular: abottest
+   shortNames:
+     - atest
+ scope: Namespaced
+ versions:
+   - name: v1
+     served: true
+     storage: true
+     schema:
+       openAPIV3Schema:
+         type: object
+         properties:
+           spec:
+             type: object
+             properties:
+               testTag:
+                 type: string
+                 description: "Abot test tag (e.g., initial-attach, handover)"
+               build:
+                 type: string
+                 description: "Build or release under test"
+               configOverrides:
+                 type: object
+                 additionalProperties:
+                   type: string
+                 description: "Optional key-value overrides for Abot test config"
+           status:
+             type: object
+             properties:
+               phase:
+                 type: string
+                 description: "Status of test execution (Pending, Running, Completed, Failed)"
+               resultsURL:
+                 type: string
+                 description: "Link to Abot result report"

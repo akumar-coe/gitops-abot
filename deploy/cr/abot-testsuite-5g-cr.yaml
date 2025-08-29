@@ -1,0 +1,12 @@
+apiVersion: abot.capg.io/v1
+kind: AbotTestSuite
+metadata:
+ name: daily-regression
+spec:
+ build: "nightly-2025-08-29"
+ tests:
+   - testTag: "initial-attach"
+     configOverrides:
+       ABOT.TESTBED: "testbed-5g"
+   - testTag: "handover"
+   - testTag: "detach"

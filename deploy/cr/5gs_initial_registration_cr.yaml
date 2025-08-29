@@ -1,0 +1,9 @@
+apiVersion: abot.capg.io/v1
+kind: AbotTest
+metadata:
+ name: 5gs-initial-registration-open5gs-s
+spec:
+ testTag: "5gs-initial-registration-open5gs-s"
+ build: "default"
+ configOverrides:
+   ABOT.TESTBED: "testbed-5g-emulated-gnb"
