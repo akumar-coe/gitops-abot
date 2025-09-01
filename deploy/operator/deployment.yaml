@@ -17,7 +17,7 @@ spec:
       containers:
         - name: operator
           image: ghcr.io/akumar-coe/abot-operator:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           # Run kopf in standalone mode (no peering object needed)
           command: ["kopf", "run", "--standalone", "/app/operator.py"]
           workingDir: /app

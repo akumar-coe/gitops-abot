@@ -23,6 +23,15 @@ spec:
            spec:
              type: object
              properties:
+               endpoint:
+                 type: string
+               auth:
+                 type: object
+                 properties:
+                   secretRef:
+                     type: string
+             type: object
+             properties:
                build:
                  type: string
                  description: "Build or release under test"
