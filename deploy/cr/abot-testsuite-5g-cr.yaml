@@ -1,16 +1,19 @@
 apiVersion: abot.capg.io/v1
 kind: AbotTestSuite
 metadata:
- name: daily-regression
+ name: abot-testsuite-5g
  namespace: default
 spec:
   endpoint: "https://182.74.103.228/abot"
   auth:
     secretRef: abot-credentials
- build: "default"
- tests:
-   - testTag: "5gs-initial-registration-open5gs-s"
-     configOverrides:
-       ABOT.TESTBED: "testbed-5g-emulated-gnb"
-   - testTag: "handover"
-   - testTag: "detach"
+  config:
+    filename: "/etc/rebaca-test-suite/config/admin/AbotConfig.properties"
+     update:
+       ABOT.TESTBED: "file:./open5gs/testbed-5g-emulated-gnb.properties"
+       ABOT.SUTVARS: "file:./sut-vars/open5gs/default.properties"
+  tests:
+    - name: "5gs-initial-registration-open5gs-s"
+      execute:
+        params: "5gs-initial-registration-open5gs-s-test"
+        build: "default"
