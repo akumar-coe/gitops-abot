@@ -7,11 +7,6 @@ spec:
   endpoint: "https://182.74.103.228/abot"
   auth:
     secretRef: abot-credentials
-  config:
-    filename: "/etc/rebaca-test-suite/config/admin/AbotConfig.properties"
-     update:
-       ABOT.TESTBED: "file:./open5gs/testbed-5g-emulated-gnb.properties"
-       ABOT.SUTVARS: "file:./sut-vars/open5gs/default.properties"
   tests:
     - name: "5gs-initial-registration-open5gs-s"
       execute:
