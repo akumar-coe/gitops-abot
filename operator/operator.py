@@ -46,6 +46,8 @@ def create_suite(spec, name, namespace, logger, patch, body, **_):
     timeout = int(options.get("timeoutSeconds", 900))
     fetch_details = bool(options.get("fetchDetails", True))
 
+    logger.info(f"endpoint: {endpoint}")
+    logger.info(f"secret_name: {secret_name}")
     if not endpoint or not secret_name:
         raise kopf.PermanentError("spec.endpoint and spec.auth.secretRef are required.")
 
