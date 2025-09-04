@@ -25,41 +25,93 @@ spec:
              properties:
                endpoint:
                  type: string
+                 description: "Base URL of Abot API (e.g., https://182.74.103.228/abot/)"
                auth:
                  type: object
                  properties:
                    secretRef:
                      type: string
-             type: object
-             properties:
-               build:
-                 type: string
-                 description: "Build or release under test"
-               tests:
-                 type: array
-                 items:
-                   type: object
-                   properties:
-                     testTag:
-                       type: string
-                     configOverrides:
-                       type: object
-                       additionalProperties:
+                     description: "K8s Secret (same namespace) with keys: email, password"
+               suite:
+                 type: object
+                 properties:
+                   name:
+                     type: string
+                     description: "Logical name for this suite run"
+                   params:
+                     type: object
+                     properties:
+                       testTag:
                          type: string
+                         description: "Identifier for the specific test case (e.g., 5gs-initial-registration-open5gs-s)"
+                       file:
+                         type: string
+                         description: "Top-level config file for Abot (YAML/JSON)"
+                       testbedFile:
+                         type: string
+                         description: "Path/ref to .properties file for testbed"
+                       sutVarsFile:
+                         type: string
+                         description: "Path/ref to .properties file for SUT variables"
+                       configOverrides:
+                         type: object
+                         additionalProperties:
+                           type: string
+                         description: "Inline overrides (key=value) applied on top of files"
+                     additionalProperties: true
+                     description: "Free-form params for Abot config/update APIs"
+               execution:
+                 type: object
+                 properties:
+                   trigger:
+                     type: boolean
+                     description: "If true, operator triggers execution after config/suite creation"
+                   options:
+                     type: object
+                     additionalProperties:
+                       type: string
+                     description: "Free-form execution options (parallelism, retries, labels, etc.)"
+               polling:
+                 type: object
+                 properties:
+                   intervalSeconds:
+                     type: integer
+                     description: "How often to poll execution status"
+                   timeoutSeconds:
+                     type: integer
+                     description: "Max time to wait before marking Failed"
+               results:
+                 type: object
+                 properties:
+                   fetchDetails:
+                     type: boolean
+                     description: "Fetch detailed results/artifacts when done"
+                   storageURL:
+                     type: string
+                     description: "Optional external location to push results (e.g., s3://...)"
            status:
-             type: object
-             properties:
-               suitePhase:
-                 type: string
-                 description: "Overall status (Pending, Running, Completed, Failed)"
-               testStatuses:
-                 type: array
-                 items:
-                   type: object
-                   properties:
-                     name:
-                       type: string
-                     phase:
-                       type: string
-                     resultsURL:
-                       type: string
+              type: object
+              properties:
+                suitePhase:
+                  type: string
+                  description: "Overall phase: Pending | Running | Succeeded | Failed"
+                message:
+                  type: string
+                  description: "Last operator message/error"
+                executionId:
+                  type: string
+                  description: "Abot execution/job ID"
+                testStatuses:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      phase:
+                        type: string
+                      resultsURL:
+                        type: string
+     subresources:
+       status: {}
+

@@ -16,7 +16,7 @@ spec:
       serviceAccountName: abot-operator-sa
       containers:
         - name: operator
-          image: ghcr.io/akumar-coe/abot-operator:latest
+          image: ghcr.io/akumar-coe/abot-operator:v0.4.0
           imagePullPolicy: Always
           # Run kopf in standalone mode (no peering object needed)
           command: ["kopf", "run", "--standalone", "/app/operator.py"]

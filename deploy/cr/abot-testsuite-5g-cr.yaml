@@ -4,11 +4,23 @@ metadata:
  name: abot-testsuite-5g
  namespace: default
 spec:
-  endpoint: "http://182.74.103.228:80/abotrest/abot/api/v5/login"
-  auth:
-    secretRef: abot-credentials
-  tests:
-    - name: "5gs-initial-registration-open5gs-s"
-      execute:
-        params: "5gs-initial-registration-open5gs-s-test"
-        build: "default"
+ endpoint: "http://182.74.103.228:80/abotrest/abot/api/v5/"
+ auth:
+   secretRef: abot-credentials
+ suite:
+   name: "5G Initial Registration Suite"
+   params:
+     testTag: "5gs-initial-registration-open5gs-s"       # 👈 key Abot identifier
+     file: "/etc/rebaca-test-suite/config/admin/ABotConfig.properties"
+     testbedFile: "file:open5gs/testbeds/testbed-5g-emulated-gnb.properties"
+     sutVarsFile: "file:open5gs/sut-vars/default5G.properties"
+     configOverrides:
+       timer_T3412: "30s"
+       plmn: "00101"
+ execution:
+   trigger: true
+ polling:
+   intervalSeconds: 10
+   timeoutSeconds: 1200
+ results:
+   fetchDetails: true
